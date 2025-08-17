@@ -29,12 +29,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.remove('loading');
                 setTimeout(() => {
                     bootScreen.style.display = 'none';
+                    initializeSkillBars();
                 }, 1000);
             }, 500);
         }
     }
 
     runBootSequence();
+
+    // Initialize Skill Bars
+    function initializeSkillBars() {
+        document.querySelectorAll('.skill-bar').forEach(bar => {
+            const level = bar.getAttribute('data-level');
+            bar.style.setProperty('--skill-level', `${level}%`);
+            bar.style.width = `${level}%`;
+        });
+    }
+
+    // Scroll Animation
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        },
+        { threshold: 0.1 }
+    );
+
+    sections.forEach(section => observer.observe(section));
 
     // Matrix Rain Effect
     const canvas = document.getElementById('matrix-rain');
@@ -72,54 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setInterval(drawMatrix, 50);
 
-    // Scroll Animation
-    const sections = document.querySelectorAll('.section');
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        },
-        { threshold: 0.1 }
-    );
-
-    sections.forEach(section => observer.observe(section));
-
-    // Glitch Text Effect
-    function createGlitchEffect(element) {
-        const text = element.textContent;
-        let glitchInterval;
-
-        element.addEventListener('mouseover', () => {
-            glitchInterval = setInterval(() => {
-                const glitchedText = text.split('').map(char => {
-                    return Math.random() > 0.9 ? 
-                        chars[Math.floor(Math.random() * chars.length)] : char;
-                }).join('');
-                element.textContent = glitchedText;
-            }, 50);
-        });
-
-        element.addEventListener('mouseout', () => {
-            clearInterval(glitchInterval);
-            element.textContent = text;
-        });
-    }
-
-    document.querySelectorAll('.cyber-glitch').forEach(createGlitchEffect);
-
-    // Skill Bars Animation
-    const skillBars = document.querySelectorAll('.skill-bar');
-    skillBars.forEach(bar => {
-        const level = bar.getAttribute('data-level');
-        bar.style.width = '0%';
-        setTimeout(() => {
-            bar.style.width = `${level}%`;
-        }, 500);
-    });
-
     // Visitor Counter
     const visitorCount = document.getElementById('visitor-count');
     let count = 0;
@@ -135,41 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateCounter();
-
-    // Parallax Effect
-    window.addEventListener('mousemove', (e) => {
-        const cityscape = document.querySelector('.parallax-cityscape');
-        const grid = document.querySelector('.parallax-grid');
-        
-        const mouseX = (window.innerWidth / 2 - e.clientX) / 50;
-        const mouseY = (window.innerHeight / 2 - e.clientY) / 50;
-
-        cityscape.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-        grid.style.transform = `rotateX(45deg) translate(${mouseX * 2}px, ${mouseY * 2}px)`;
-    });
-
-    // Easter Egg: Konami Code
-    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let konamiIndex = 0;
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === konamiCode[konamiIndex]) {
-            konamiIndex++;
-            if (konamiIndex === konamiCode.length) {
-                activateMatrixMode();
-                konamiIndex = 0;
-            }
-        } else {
-            konamiIndex = 0;
-        }
-    });
-
-    function activateMatrixMode() {
-        document.body.style.animation = 'matrix-effect 2s linear';
-        setTimeout(() => {
-            document.body.style.animation = '';
-        }, 2000);
-    }
 
     // Window Resize Handler
     window.addEventListener('resize', () => {
