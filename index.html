@@ -1,220 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZIYA.EXE | Cybersecurity Explorer</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ZIYA.EXE — Retro-Futuristic Portfolio</title>
+  <meta name="description" content="CRT, VHS static, Matrix rain, neon cyberpunk UI, 3D project cards, boot sequence, Konami code." />
+
+  <!-- Google Fonts + Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="loading">
-    <!-- Boot Screen -->
-    <div id="boot-screen">
-        <div class="boot-content">
-            <div class="boot-logo">ZIYA.EXE</div>
-            <div class="boot-progress">
-                <div class="progress-bar">
-                    <div class="progress"></div>
-                </div>
-                <div class="boot-text"></div>
-            </div>
+<body>
+  <!-- Background canvases -->
+  <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+  <canvas id="noiseCanvas" aria-hidden="true"></canvas>
+  <div class="parallax" aria-hidden="true">
+    <div class="city"></div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- Short boot overlay -->
+  <div id="boot" role="dialog" aria-label="Boot sequence">
+    <div class="terminal" id="bootLog" aria-live="polite"></div>
+  </div>
+
+  <div class="crt">
+    <header>
+      <div class="wrap">
+        <div class="title" aria-label="Site title">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>ZIYA.EXE</span>
+          <span class="badge">Online</span>
         </div>
-    </div>
+        <div class="sub">
+          Last Updated: <time datetime="2025-08-17T07:44:26Z">2025-08-17 07:44:26 UTC</time> · Author: @ziyaexe
+        </div>
+      </div>
+    </header>
 
-    <!-- Matrix Rain Canvas -->
-    <canvas id="matrix-rain"></canvas>
+    <main>
+      <!-- Hero -->
+      <section class="hero wrap">
+        <div class="tagline">
+          <span class="glitch" data-text="Retro-Futuristic Portfolio">Retro-Futuristic Portfolio</span>
+          <div>CRT • VHS • Matrix • Neon • Cyberpunk UI</div>
+        </div>
+        <div class="badges">
+          <span class="badge"><i class="fa-solid fa-microchip"></i> HTML/CSS/JS</span>
+          <span class="badge"><i class="fa-solid fa-terminal"></i> Boot Sequence</span>
+          <span class="badge"><i class="fa-solid fa-layer-group"></i> Parallax</span>
+          <span class="badge"><i class="fa-solid fa-key"></i> Konami Egg</span>
+          <span class="badge"><i class="fa-solid fa-mobile-screen"></i> Responsive</span>
+          <span class="badge"><i class="fa-solid fa-print"></i> Print-friendly</span>
+        </div>
+      </section>
 
-    <!-- Parallax Background -->
-    <div class="parallax-container">
-        <div class="parallax-grid"></div>
-        <div class="parallax-cityscape"></div>
-    </div>
-
-    <!-- CRT Effects -->
-    <div class="crt-overlay"></div>
-    <div class="scanline"></div>
-    <div class="vhs-noise"></div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <header>
-            <div class="terminal-info">
-                <div class="terminal-header">
-                    <span class="prompt">$</span> system_info
-                </div>
-                <div class="terminal-output">
-                    <p>User: ziyaexe</p>
-                    <p>Status: Online</p>
-                    <p>Last Login: 2025-08-17 07:58:36 UTC</p>
-                </div>
+      <!-- Projects -->
+      <section class="wrap" id="projects">
+        <h2><span class="pipe">|</span> Projects</h2>
+        <div class="grid-cards">
+          <article class="card" tabindex="0">
+            <div class="card-inner">
+              <div class="card-face card-front" aria-label="Project: Cyber Terminal">
+                <div class="icon">🖥️</div>
+                <h3>Cyber Terminal</h3>
+                <p>CLI-style web shell</p>
+              </div>
+              <div class="card-face card-back">
+                <p>Interactive JS terminal with commands, history, and ASCII art.</p>
+                <div class="status">Status: Active</div>
+              </div>
             </div>
-            <h1 class="cyber-glitch" data-text="ZIYA.EXE">ZIYA.EXE</h1>
-            <nav class="cyber-nav">
-                <a href="#about" class="nav-item" data-text="ABOUT.sys">ABOUT.sys</a>
-                <a href="#projects" class="nav-item" data-text="PROJECTS.exe">PROJECTS.exe</a>
-                <a href="#hobbies" class="nav-item" data-text="HOBBIES.dat">HOBBIES.dat</a>
-                <a href="#connect" class="nav-item" data-text="CONNECT.net">CONNECT.net</a>
-            </nav>
-        </header>
+          </article>
 
-        <main>
-            <section id="about" class="section">
-                <div class="cyber-window">
-                    <div class="window-header">
-                        <div class="window-controls">
-                            <span class="control close"></span>
-                            <span class="control minimize"></span>
-                            <span class="control maximize"></span>
-                        </div>
-                        <div class="window-title">ABOUT.sys</div>
-                    </div>
-                    <div class="window-content">
-                        <div class="typing-effect">
-                            <p>> INITIALIZING PROFILE DATA...</p>
-                            <p>> ACCESSING CORE MEMORIES...</p>
-                            <p>> COMPILING EXPERIENCE...</p>
-                            <br>
-                            <p class="bio">I'm an 18-year-old Computer Science student with a passion for Cybersecurity. Currently exploring the digital frontier while maintaining a Help Desk position to gain hands-on experience.</p>
-                            <br>
-                            <div class="skill-matrix">
-                                <div class="skill">
-                                    <span class="skill-name">CYBERSECURITY</span>
-                                    <div class="skill-bar" data-level="75"></div>
-                                </div>
-                                <div class="skill">
-                                    <span class="skill-name">PROGRAMMING</span>
-                                    <div class="skill-bar" data-level="80"></div>
-                                </div>
-                                <div class="skill">
-                                    <span class="skill-name">NETWORKING</span>
-                                    <div class="skill-bar" data-level="70"></div>
-                                </div>
-                                <div class="skill">
-                                    <span class="skill-name">HELP DESK</span>
-                                    <div class="skill-bar" data-level="85"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="projects" class="section">
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <h3>Security Research Lab</h3>
-                                <div class="card-icon">🔒</div>
-                            </div>
-                            <div class="card-back">
-                                <p>Exploring vulnerabilities and security practices through hands-on labs and CTF challenges.</p>
-                                <div class="project-status">Status: Active</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <h3>Help Desk Portal</h3>
-                                <div class="card-icon">💻</div>
-                            </div>
-                            <div class="card-back">
-                                <p>Developing and maintaining support systems while gaining real-world IT experience.</p>
-                                <div class="project-status">Status: Ongoing</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <h3>Network Defense</h3>
-                                <div class="card-icon">🛡️</div>
-                            </div>
-                            <div class="card-back">
-                                <p>Building and testing network security configurations and protocols.</p>
-                                <div class="project-status">Status: In Progress</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="hobbies" class="section">
-                <div class="hobbies-grid">
-                    <div class="hobby-card">
-                        <div class="pixel-art chess"></div>
-                        <h3>Chess</h3>
-                        <p>Strategic mind, always thinking ahead</p>
-                        <a href="https://www.chess.com/member/ziyaexe" class="hobby-link" target="_blank">View Profile</a>
-                    </div>
-                    <div class="hobby-card">
-                        <div class="pixel-art calisthenics"></div>
-                        <h3>Calisthenics</h3>
-                        <p>Building strength naturally</p>
-                    </div>
-                    <div class="hobby-card">
-                        <div class="pixel-art football"></div>
-                        <h3>Football</h3>
-                        <p>Team player on and off the field</p>
-                    </div>
-                    <div class="hobby-card">
-                        <div class="pixel-art computers"></div>
-                        <h3>Tech Exploration</h3>
-                        <p>Always learning, always coding</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="connect" class="section">
-                <div class="social-grid">
-                    <a href="https://github.com/ziyaexe" class="social-link github" target="_blank">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                        <div class="social-hover">Follow my code journey</div>
-                    </a>
-                    <a href="https://www.youtube.com/@ziyasecurity" class="social-link youtube" target="_blank">
-                        <i class="fab fa-youtube"></i>
-                        <span>YouTube</span>
-                        <div class="social-hover">Security tutorials & insights</div>
-                    </a>
-                    <a href="https://www.chess.com/member/ziyaexe" class="social-link chess" target="_blank">
-                        <i class="fas fa-chess-knight"></i>
-                        <span>Chess.com</span>
-                        <div class="social-hover">Challenge me to a game</div>
-                    </a>
-                    <a href="https://www.instagram.com/ziyasecurity/" class="social-link instagram" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                        <span>Instagram</span>
-                        <div class="social-hover">Behind the scenes</div>
-                    </a>
-                    <a href="https://www.codedex.io/@ziyaexe" class="social-link codedex" target="_blank">
-                        <i class="fas fa-code"></i>
-                        <span>Codedex</span>
-                        <div class="social-hover">Track my coding progress</div>
-                    </a>
-                    <a href="https://x.com/ziyaexe" class="social-link twitter" target="_blank">
-                        <i class="fab fa-x-twitter"></i>
-                        <span>X/Twitter</span>
-                        <div class="social-hover">Tech thoughts & updates</div>
-                    </a>
-                </div>
-            </section>
-        </main>
-
-        <footer>
-            <div class="terminal-line">
-                <span class="prompt">$</span> echo "© 2025 ZIYA.EXE | Crafted with 💾"
+          <article class="card" tabindex="0">
+            <div class="card-inner">
+              <div class="card-face card-front" aria-label="Project: Matrix Rain">
+                <div class="icon">🌧️</div>
+                <h3>Matrix Rain</h3>
+                <p>Canvas animation</p>
+              </div>
+              <div class="card-face card-back">
+                <p>Optimized columns, dynamic density control, responsive to DPR.</p>
+                <div class="status">Status: Stable</div>
+              </div>
             </div>
-            <div class="visitor-counter">
-                <span class="prompt">$</span> visitor_count
-                <span class="count" id="visitor-count">Loading...</span>
-            </div>
-        </footer>
-    </div>
+          </article>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="script.js"></script>
+          <article class="card" tabindex="0">
+            <div class="card-inner">
+              <div class="card-face card-front" aria-label="Project: VHS Noise">
+                <div class="icon">📼</div>
+                <h3>VHS Noise</h3>
+                <p>Procedural static</p>
+              </div>
+              <div class="card-face card-back">
+                <p>Pixel noise shader look using Canvas 2D for broad compatibility.</p>
+                <div class="status">Status: Beta</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- README-style example slot -->
+          <article class="card" tabindex="0">
+            <div class="card-inner">
+              <div class="card-face card-front">
+                <div class="icon">🔒</div>
+                <h3>Project Title</h3>
+                <p>Click/hover to flip</p>
+              </div>
+              <div class="card-face card-back">
+                <p>Project description</p>
+                <div class="status">Status: Active</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="wrap" id="skills">
+        <h2><span class="pipe">|</span> Skills</h2>
+        <div class="skills">
+          <div class="skill"><h4>HTML5</h4><div class="bar"><span style="--pct:95%"></span></div></div>
+          <div class="skill"><h4>CSS3 / Animations</h4><div class="bar"><span style="--pct:92%"></span></div></div>
+          <div class="skill"><h4>JavaScript (Vanilla)</h4><div class="bar"><span style="--pct:88%"></span></div></div>
+          <div class="skill"><h4>Cyber Security</h4><div class="bar"><span style="--pct:75%"></span></div></div>
+          <div class="skill"><h4>Help Desk</h4><div class="bar"><span style="--pct:80%"></span></div></div>
+          <div class="skill"><h4>Chess & Strategy</h4><div class="bar"><span style="--pct:70%"></span></div></div>
+        </div>
+      </section>
+
+      <!-- Hobbies -->
+      <section class="wrap" id="hobbies">
+        <h2><span class="pipe">|</span> Hobbies</h2>
+        <div class="grid-cards">
+          <article class="card" tabindex="0">
+            <div class="card-inner">
+              <div class="card-face card-front"><div class="icon">♟️</div><h3>Chess</h3><p>Openings & tactics</p></div>
+              <div class="card-face card-back"><p>Favorite: Sicilian Defense • Daily puzzles and rapid games.</p><div class="status">Pixel icon</div></div>
+            </div>
+          </article>
+          <article class="card" tabindex="0">
+            <div class="card-inner">
+              <div class="card-face card-front"><div class="icon">🤸</div><h3>Calisthenics</h3><p>Bodyweight flows</p></div>
+              <div class="card-face card-back"><p>Rings, handstands, planche progressions.</p><div class="status">Active</div></div>
+            </div>
+          </article>
+          <article class="card" tabindex="0">
+            <div class="card-inner">
+              <div class="card-face card-front"><div class="icon">🏈</div><h3>Football</h3><p>Team play</p></div>
+              <div class="card-face card-back"><p>Wing play & endurance drills.</p><div class="status">Seasonal</div></div>
+            </div>
+          </article>
+          <article class="card" tabindex="0">
+            <div class="card-inner">
+              <div class="card-face card-front"><div class="icon">💻</div><h3>Computers</h3><p>Build • Tweak • Hack</p></div>
+              <div class="card-face card-back"><p>OSINT, scripting, performance tuning.</p><div class="status">Always on</div></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Socials -->
+      <section class="wrap" id="socials">
+        <h2><span class="pipe">|</span> Connected Profiles</h2>
+        <nav class="socials" aria-label="Social links">
+          <a class="social-link" href="https://github.com/ziyaexe" target="_blank" rel="noopener">
+            <i class="fa-brands fa-github"></i><span>GitHub</span><span class="hovercard">github.com/ziyaexe</span>
+          </a>
+          <a class="social-link" href="https://www.youtube.com/@ziyasecurity" target="_blank" rel="noopener">
+            <i class="fa-brands fa-youtube"></i><span>YouTube</span><span class="hovercard">@ziyasecurity</span>
+          </a>
+          <a class="social-link" href="https://www.chess.com/member/ziyaexe" target="_blank" rel="noopener">
+            <i class="fa-solid fa-chess-knight"></i><span>Chess.com</span><span class="hovercard">/member/ziyaexe</span>
+          </a>
+          <a class="social-link" href="https://www.instagram.com/ziyasecurity/" target="_blank" rel="noopener">
+            <i class="fa-brands fa-instagram"></i><span>Instagram</span><span class="hovercard">@ziyasecurity</span>
+          </a>
+          <a class="social-link" href="https://www.codedex.io/@ziyaexe" target="_blank" rel="noopener">
+            <i class="fa-solid fa-code"></i><span>Codedex</span><span class="hovercard">@ziyaexe</span>
+          </a>
+          <a class="social-link" href="https://x.com/ziyaexe" target="_blank" rel="noopener">
+            <i class="fa-brands fa-x-twitter"></i><span>X / Twitter</span><span class="hovercard">@ziyaexe</span>
+          </a>
+        </nav>
+      </section>
+
+      <footer>
+        <div>Made with 💾 by <strong>ziyaexe</strong> • MIT License</div>
+      </footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
