@@ -1,195 +1,140 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Boot Screen Sequence
-    const bootScreen = document.getElementById('boot-screen');
-    const progress = document.querySelector('.progress');
-    const bootText = document.querySelector('.boot-text');
-    
-    const bootSequence = [
-        { text: 'Initializing system...', progress: 10 },
-        { text: 'Loading core modules...', progress: 25 },
-        { text: 'Establishing secure connection...', progress: 40 },
-        { text: 'Mounting cyberdeck drives...', progress: 60 },
-        { text: 'Running security protocols...', progress: 75 },
-        { text: 'Accessing neural network...', progress: 90 },
-        { text: 'System ready.', progress: 100 }
-    ];
+// ===== Short Boot Sequence =====
+const bootLines = [
+  '>>> ZIYA.EXE bootloader v1.0',
+  'System status: ONLINE'
+];
+const boot = document.getElementById('boot');
+const bootLog = document.getElementById('bootLog');
 
-    let currentStep = 0;
+const typeLine = (text) =>
+  new Promise((res) => {
+    const line = document.createElement('div');
+    const span = document.createElement('span');
+    span.className = 'type';
+    line.appendChild(span);
+    bootLog.appendChild(line);
+    let i = 0;
+    const tick = () => {
+      span.textContent = text.slice(0, i++);
+      if (i <= text.length) requestAnimationFrame(tick);
+      else { span.classList.remove('type'); res(); }
+    };
+    tick();
+  });
 
-    function runBootSequence() {
-        if (currentStep < bootSequence.length) {
-            const step = bootSequence[currentStep];
-            bootText.textContent = step.text;
-            progress.style.width = `${step.progress}%`;
-            currentStep++;
-            setTimeout(runBootSequence, 800);
-        } else {
-            setTimeout(() => {
-                bootScreen.style.opacity = '0';
-                document.body.classList.remove('loading');
-                setTimeout(() => {
-                    bootScreen.style.display = 'none';
-                    initializeSkillBars();
-                }, 1000);
-            }, 500);
-        }
+(async () => {
+  for (const l of bootLines) {
+    // eslint-disable-next-line no-await-in-loop
+    await typeLine(l);
+    // eslint-disable-next-line no-await-in-loop
+    await new Promise((r) => setTimeout(r, 150));
+    bootLog.scrollTop = bootLog.scrollHeight;
+  }
+  await new Promise((r) => setTimeout(r, 250));
+  boot.style.opacity = '0';
+  setTimeout(() => boot.remove(), 500);
+
+  // Animate skill bars once boot finishes
+  document.querySelectorAll('.bar > span').forEach((el) => {
+    const pct = el.style.getPropertyValue('--pct') || '70%';
+    requestAnimationFrame(() => { el.style.width = pct; });
+  });
+})();
+
+// ===== Matrix Rain =====
+(function () {
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+  const symbols =
+    'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポ0123456789';
+  let cols, drops, w, h, fontSize;
+
+  const resize = () => {
+    const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+    w = (canvas.width = Math.floor(innerWidth * dpr));
+    h = (canvas.height = Math.floor(innerHeight * dpr));
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+    fontSize = Math.max(12, Math.floor(16 * dpr));
+    cols = Math.floor(w / fontSize);
+    drops = new Array(cols).fill(0).map(() => Math.floor(Math.random() * h));
+    ctx.font = fontSize + 'px monospace';
+  };
+  resize();
+  addEventListener('resize', resize);
+
+  function draw(ts) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
+    ctx.fillRect(0, 0, w, h);
+    for (let i = 0; i < cols; i++) {
+      const char = symbols[Math.floor(Math.random() * symbols.length)];
+      ctx.fillStyle = i % 10 === 0 ? 'rgba(255,0,193,0.9)' : 'rgba(0,255,249,0.9)';
+      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
     }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
 
-    runBootSequence();
+// ===== VHS Noise (procedural static) =====
+(function () {
+  const canvas = document.getElementById('noiseCanvas');
+  const ctx = canvas.getContext('2d');
+  const resize = () => {
+    const dpr = Math.max(1, Math.min(devicePixelRatio || 1, 2));
+    canvas.width = innerWidth * dpr;
+    canvas.height = innerHeight * dpr;
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+  };
+  resize();
+  addEventListener('resize', resize);
 
-    // Initialize Skill Bars
-    function initializeSkillBars() {
-        document.querySelectorAll('.skill-bar').forEach(bar => {
-            const level = bar.getAttribute('data-level');
-            bar.style.width = `${level}%`;
-        });
+  function frame() {
+    const img = ctx.createImageData(canvas.width, canvas.height);
+    const data = img.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const v = Math.random() * 255;
+      data[i] = data[i + 1] = data[i + 2] = v;
+      data[i + 3] = Math.random() * 18; // low alpha for subtle static
     }
+    ctx.putImageData(img, 0, 0);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
 
-    // Matrix Rain Effect
-    const canvas = document.getElementById('matrix-rain');
-    const ctx = canvas.getContext('2d');
+// ===== Konami Code (↑↑↓↓←→←→BA) =====
+(function () {
+  const sequence = [
+    'ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'
+  ];
+  let idx = 0;
+  const toast = document.getElementById('toast');
 
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    const chars = '01ZIYAEXE♟️💪⚽💻SECURITY'.split('');
-    const drops = Array(Math.ceil(window.innerWidth / 16)).fill(1);
-
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#0F0';
-        ctx.font = '16px monospace';
-
-        for (let i = 0; i < drops.length; i++) {
-            const char = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(char, i * 16, drops[i] * 16);
-
-            if (drops[i] * 16 > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-
-    setInterval(drawMatrix, 50);
-
-    // Scroll Animation
-    const sections = document.querySelectorAll('.section');
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        },
-        { threshold: 0.1 }
+  const enableHackMode = () => {
+    document.documentElement.style.setProperty('--text', '#ffffff');
+    document.body.animate(
+      [{ filter: 'hue-rotate(0deg)' }, { filter: 'hue-rotate(360deg)' }],
+      { duration: 1200 }
     );
+    toast.textContent = 'HACK MODE ENABLED • Access Granted';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2600);
+  };
 
-    sections.forEach(section => observer.observe(section));
-
-    // Typing Effect
-    function typeWriter(element, text, speed = 50) {
-        let i = 0;
-        function type() {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            }
-        }
-        type();
+  addEventListener('keydown', (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === sequence[idx]) {
+      idx++;
+      if (idx === sequence.length) {
+        enableHackMode();
+        idx = 0;
+      }
+    } else {
+      idx = 0;
     }
-
-    // Project Cards Hover Effect
-    document.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.querySelector('.card-inner').style.transform = 'rotateY(180deg)';
-        });
-        card.addEventListener('mouseleave', () => {
-            card.querySelector('.card-inner').style.transform = 'rotateY(0)';
-        });
-    });
-
-    // Visitor Counter
-    const visitorCount = document.getElementById('visitor-count');
-    let count = 0;
-    const targetCount = Math.floor(Math.random() * 1000) + 500;
-
-    function updateCounter() {
-        if (count < targetCount) {
-            count += Math.floor(Math.random() * 10) + 1;
-            if (count > targetCount) count = targetCount;
-            visitorCount.textContent = `> ${count} hackers connected | Last Update: 2025-08-17 08:01:52 UTC`;
-            requestAnimationFrame(updateCounter);
-        }
-    }
-
-    updateCounter();
-
-    // Parallax Effect
-    document.addEventListener('mousemove', (e) => {
-        const cityscape = document.querySelector('.parallax-cityscape');
-        const grid = document.querySelector('.parallax-grid');
-        
-        const mouseX = (window.innerWidth / 2 - e.clientX) / 50;
-        const mouseY = (window.innerHeight / 2 - e.clientY) / 50;
-
-        if (cityscape && grid) {
-            cityscape.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-            grid.style.transform = `rotateX(45deg) translate(${mouseX * 2}px, ${mouseY * 2}px)`;
-        }
-    });
-
-    // Easter Egg: Konami Code
-    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let konamiIndex = 0;
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === konamiCode[konamiIndex]) {
-            konamiIndex++;
-            if (konamiIndex === konamiCode.length) {
-                document.body.style.animation = 'matrix-mode 2s linear';
-                setTimeout(() => {
-                    document.body.style.animation = '';
-                }, 2000);
-                konamiIndex = 0;
-            }
-        } else {
-            konamiIndex = 0;
-        }
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        drops.length = Math.ceil(window.innerWidth / 16);
-        drops.fill(1);
-    });
-
-    // Initialize everything when the page loads
-    window.addEventListener('load', () => {
-        initializeSkillBars();
-        document.querySelectorAll('.typing-effect p').forEach(p => {
-            typeWriter(p, p.textContent);
-        });
-    });
-});
-
-// Add this to your CSS if not already present
-const style = document.createElement('style');
-style.textContent = `
-@keyframes matrix-mode {
-    0% { filter: hue-rotate(0deg); }
-    50% { filter: hue-rotate(180deg); }
-    100% { filter: hue-rotate(360deg); }
-}
-`;
-document.head.appendChild(style);
+  });
+})();
