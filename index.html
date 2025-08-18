@@ -1,209 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ziya.exe</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziya.com // Neural Linkage</title>
+    <!-- Tailwind CSS for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use a dynamic, tech-inspired font -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Audiowide&display=swap" rel="stylesheet">
+    <!-- Font Awesome for a wide range of icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z' fill='%2366b2ff'/%3E%3Cpath d='M12 4v16M4 12h16' stroke='%2366b2ff' stroke-width='1.5'/%3E%3C/svg%3E") 12 12, auto;
+            overflow: hidden; /* Prevent scroll bars due to canvas animation */
+        }
+        
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .font-audiowide { font-family: 'Audiowide', cursive; }
 
-    :root {
-      --bg: #0b0b0f;
-      --red: #e50914;
-      --violet: #6a00ff;
-      --green: #3aff36;
-    }
+        /* Evangelion-style grid and fade */
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, rgba(17, 24, 39, 0) 0%, rgba(17, 24, 39, 0.9) 70%, #111827 100%);
+            z-index: 10;
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Share Tech Mono', monospace;
-      background: var(--bg);
-      color: white;
-      overflow-x: hidden;
-    }
+        /* Glitch Effect for Title */
+        .glitch-text {
+            position: relative;
+            text-shadow: 0.05em 0 0 rgba(102, 178, 255, 0.75), -0.05em -0.025em 0 rgba(153, 102, 255, 0.75), 0.025em 0.05em 0 rgba(255, 255, 204, 0.75);
+            animation: glitch 725ms infinite;
+        }
 
-    /* Parallax background */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: url("your-photo-bg.jpg") no-repeat center center/cover;
-      opacity: 0.1;
-      z-index: -2;
-      transform: translateY(0);
-      animation: parallax 20s linear infinite alternate;
-    }
-    @keyframes parallax {
-      from { transform: translateY(0); }
-      to { transform: translateY(-50px); }
-    }
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(102, 178, 255, 0.75), -0.05em -0.025em 0 rgba(153, 102, 255, 0.75), 0.025em 0.05em 0 rgba(255, 255, 204, 0.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(102, 178, 255, 0.75), -0.05em -0.025em 0 rgba(153, 102, 255, 0.75), 0.025em 0.05em 0 rgba(255, 255, 204, 0.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(102, 178, 255, 0.75), -0.05em 0.025em 0 rgba(153, 102, 255, 0.75), -0.025em -0.05em 0 rgba(255, 255, 204, 0.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(102, 178, 255, 0.75), -0.05em 0.025em 0 rgba(153, 102, 255, 0.75), -0.025em -0.05em 0 rgba(255, 255, 204, 0.75); }
+            50% { text-shadow: 0.05em 0.025em 0 rgba(102, 178, 255, 0.75), 0.05em 0 0 rgba(153, 102, 255, 0.75), 0 -0.05em 0 rgba(255, 255, 204, 0.75); }
+            74% { text-shadow: 0.05em 0.025em 0 rgba(102, 178, 255, 0.75), 0.05em 0 0 rgba(153, 102, 255, 0.75), 0 -0.05em 0 rgba(255, 255, 204, 0.75); }
+            75% { text-shadow: -0.05em -0.025em 0 rgba(102, 178, 255, 0.75), -0.05em 0.025em 0 rgba(153, 102, 255, 0.75), -0.025em -0.05em 0 rgba(255, 255, 204, 0.75); }
+            99% { text-shadow: -0.05em -0.025em 0 rgba(102, 178, 255, 0.75), -0.05em 0.025em 0 rgba(153, 102, 255, 0.75), -0.025em -0.05em 0 rgba(255, 255, 204, 0.75); }
+            100% { text-shadow: 0.05em 0 0 rgba(102, 178, 255, 0.75), -0.05em -0.025em 0 rgba(153, 102, 255, 0.75), 0.025em 0.05em 0 rgba(255, 255, 204, 0.75); }
+        }
+        
+        /* Neon Button Hover Effect */
+        .neon-border-hover:hover {
+            box-shadow: 0 0 5px #66b2ff, 0 0 10px #66b2ff, 0 0 20px #66b2ff, inset 0 0 5px #66b2ff, inset 0 0 10px #66b2ff, inset 0 0 20px #66b2ff;
+            transform: scale(1.05);
+            border-color: #66b2ff;
+        }
 
-    /* CRT overlay */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: repeating-linear-gradient(
-        rgba(255,255,255,0.03) 0px,
-        rgba(255,255,255,0.03) 2px,
-        transparent 2px,
-        transparent 4px
-      );
-      pointer-events: none;
-      mix-blend-mode: overlay;
-      animation: flicker 2s infinite;
-      z-index: -1;
-    }
-    @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: .99; }
-      20%, 24%, 55% { opacity: .4; }
-    }
-
-    header {
-      text-align: center;
-      padding: 5vh 2vw;
-    }
-
-    .title {
-      font-size: 2.5em;
-      color: var(--red);
-      text-shadow: 0 0 10px var(--red), 0 0 20px var(--violet);
-      animation: glitch 2s infinite;
-    }
-    @keyframes glitch {
-      0% { text-shadow: 2px 0 var(--red), -2px 0 var(--violet); }
-      20% { text-shadow: -2px -2px var(--violet), 2px 2px var(--red); }
-      40% { text-shadow: 2px -2px var(--violet), -2px 2px var(--red); }
-      60%,100% { text-shadow: 0 0 10px var(--red), 0 0 20px var(--violet); }
-    }
-
-    section {
-      max-width: 900px;
-      margin: 5vh auto;
-      padding: 2em;
-      background: rgba(0,0,0,0.65);
-      border: 1px solid var(--violet);
-      border-radius: 8px;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 0 20px rgba(0,0,0,0.8);
-      animation: fadein 1.2s ease forwards;
-      opacity: 0;
-    }
-    section.visible { opacity: 1; }
-
-    @keyframes fadein {
-      from {opacity:0; transform:translateY(40px);}
-      to {opacity:1; transform:translateY(0);}
-    }
-
-    img {
-      width: 100%;
-      border-radius: 6px;
-      margin: 10px 0;
-      filter: contrast(1.1) saturate(1.2);
-      transition: transform .3s ease;
-    }
-    img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px var(--red);
-    }
-
-    a {
-      color: var(--green);
-      text-decoration: none;
-    }
-    a:hover {
-      color: var(--red);
-      text-shadow: 0 0 5px var(--violet);
-    }
-
-    footer {
-      text-align: center;
-      padding: 2em;
-      font-size: .9em;
-      color: #999;
-    }
-
-    /* Floating glitch particles */
-    .particle {
-      position: fixed;
-      width: 2px; height: 20px;
-      background: var(--violet);
-      opacity: 0.6;
-      animation: fall 6s linear infinite;
-    }
-    @keyframes fall {
-      from { transform: translateY(-50px); }
-      to { transform: translateY(110vh); }
-    }
-  </style>
+    </style>
 </head>
-<body>
-  <header>
-    <h1 class="title">Ziya.exe</h1>
-    <p>Computer Science · Cyber Security · Digital Explorer</p>
-  </header>
+<body class="bg-gray-900 text-blue-300">
 
-  <section>
-    <h2>About Me</h2>
-    <p>I’m Ziya, 18 years old. Studying <strong>Computer Science</strong> and focused on <strong>Cyber Security</strong>. Currently exploring Help Desk, networks, and hacking challenges.</p>
-    <img src="your-photo1.jpg" alt="Anime Background 1">
-  </section>
+    <!-- Background Canvas for geometric and star animations -->
+    <canvas id="background-canvas" class="absolute inset-0 z-0"></canvas>
+    <!-- Background fade overlay -->
+    <div class="grid-overlay"></div>
 
-  <section>
-    <h2>Projects</h2>
-    <p>Some projects I worked on:</p>
-    <ul>
-      <li><a href="https://github.com/ziyaexe/Text-Splitter">Text Splitter</a></li>
-      <li><a href="https://github.com/ziyaexe">Other GitHub Projects</a></li>
-    </ul>
-    <img src="your-photo2.jpg" alt="Anime Background 2">
-  </section>
+    <!-- Main Content Container -->
+    <div class="relative z-20 w-full h-screen overflow-hidden flex flex-col items-center justify-center p-4">
+        
+        <!-- Main Title and Subtitle -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl md:text-7xl font-orbitron text-blue-300 mb-2 glitch-text">Z I Y A . C O M</h1>
+            <p class="text-lg md:text-xl font-audiowide text-purple-400">// NEURAL_LINKAGE_INITIATED</p>
+        </div>
 
-  <section>
-    <h2>Hobbies</h2>
-    <p>♟ Chess | 💪 Calisthenics | ⚽ Football | 💻 Computers</p>
-    <img src="your-photo3.jpg" alt="Anime Background 3">
-  </section>
+        <!-- Main Menu Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-5xl">
+            <div class="menu-item flex flex-col items-center p-6 border-2 border-purple-500 rounded-lg shadow-lg bg-gray-900/50 hover:bg-gray-800/70 transition-all duration-300 transform neon-border-hover" data-window="about-me">
+                <i class="fa-solid fa-user text-4xl md:text-6xl text-purple-400 mb-4"></i>
+                <span class="text-sm md:text-base text-center font-share-tech-mono">ABOUT_ME.exe</span>
+            </div>
+            <div class="menu-item flex flex-col items-center p-6 border-2 border-purple-500 rounded-lg shadow-lg bg-gray-900/50 hover:bg-gray-800/70 transition-all duration-300 transform neon-border-hover" data-window="projects">
+                <i class="fa-solid fa-laptop-code text-4xl md:text-6xl text-purple-400 mb-4"></i>
+                <span class="text-sm md:text-base text-center font-share-tech-mono">PROJECTS.dat</span>
+            </div>
+            <div class="menu-item flex flex-col items-center p-6 border-2 border-purple-500 rounded-lg shadow-lg bg-gray-900/50 hover:bg-gray-800/70 transition-all duration-300 transform neon-border-hover" data-window="hobbies">
+                <i class="fa-solid fa-gamepad text-4xl md:text-6xl text-purple-400 mb-4"></i>
+                <span class="text-sm md:text-base text-center font-share-tech-mono">HOBBIES.log</span>
+            </div>
+            <div class="menu-item flex flex-col items-center p-6 border-2 border-purple-500 rounded-lg shadow-lg bg-gray-900/50 hover:bg-gray-800/70 transition-all duration-300 transform neon-border-hover" data-window="socials">
+                <i class="fa-solid fa-satellite-dish text-4xl md:text-6xl text-purple-400 mb-4"></i>
+                <span class="text-sm md:text-base text-center font-share-tech-mono">SOCIALS.cfg</span>
+            </div>
+        </div>
+        
+    </div>
 
-  <section>
-    <h2>Socials</h2>
-    <ul>
-      <li>GitHub: <a href="https://github.com/ziyaexe">github.com/ziyaexe</a></li>
-      <li>Codédex: <a href="https://www.codedex.io/@ziyaexe">codedex.io/@ziyaexe</a></li>
-      <li>Instagram: <a href="https://www.instagram.com/ziyasecurity/">@ziyasecurity</a></li>
-      <li>X/Twitter: <a href="https://x.com/ziyaexe">@ziyaexe</a></li>
-      <li>YouTube: <a href="https://www.youtube.com/@ziyasecurity">YouTube</a></li>
-      <li>Medium: <a href="https://medium.com/@ziyaexe">@ziyaexe</a></li>
-      <li>Chess: <a href="https://www.chess.com/member/ziyaexe">@ziyaexe</a></li>
-    </ul>
-  </section>
+    <!-- Windows Container -->
+    <div id="windows-container" class="absolute inset-0 flex justify-center items-center pointer-events-none z-30">
+        
+        <!-- About Me Window -->
+        <div id="about-me" class="window hidden fixed w-11/12 md:w-3/4 lg:w-1/2 p-6 bg-[#0a0a1a] border-2 border-blue-400 rounded-lg shadow-2xl shadow-blue-500/30 window-fade-in pointer-events-auto max-h-[90vh] overflow-y-auto">
+            <div class="window-header flex justify-between items-center p-2 bg-[#0c0c1c] border-b-2 border-blue-400 cursor-grab active:cursor-grabbing">
+                <span class="text-blue-400 font-bold">ABOUT_ME.exe</span>
+                <button class="close-btn text-purple-400 hover:text-white transition-colors duration-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="window-content mt-4 p-4 text-sm md:text-base">
+                <h2 class="text-2xl md:text-3xl font-orbitron text-purple-400 mb-4">STUDENT_DATA_</h2>
+                <p class="mb-4 leading-relaxed">Log: Ziya, 18-year-old Computer Science student. My journey began with a curiosity for how systems operate, and evolved into a passion for securing them. From foundational Help Desk studies to advanced cyber security principles, I'm dedicated to understanding the digital landscape and its vulnerabilities.</p>
+            </div>
+        </div>
 
-  <footer>
-    <p>© 2025 Ziya.exe</p>
-  </footer>
+        <!-- Projects Window -->
+        <div id="projects" class="window hidden fixed w-11/12 md:w-3/4 lg:w-1/2 p-6 bg-[#0a0a1a] border-2 border-blue-400 rounded-lg shadow-2xl shadow-blue-500/30 window-fade-in pointer-events-auto max-h-[90vh] overflow-y-auto">
+            <div class="window-header flex justify-between items-center p-2 bg-[#0c0c1c] border-b-2 border-blue-400 cursor-grab active:cursor-grabbing">
+                <span class="text-blue-400 font-bold">PROJECTS.dat</span>
+                <button class="close-btn text-purple-400 hover:text-white transition-colors duration-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="window-content mt-4 p-4 text-sm md:text-base">
+                <h2 class="text-2xl md:text-3xl font-orbitron text-purple-400 mb-4">MISSION_LOGS_</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="project-card bg-[#1a1a2a] p-4 border-2 border-purple-400 rounded-lg hover:border-blue-400 transition-all duration-300">
+                        <h3 class="font-audiowide text-purple-400 mb-1">OPERATION: Text-Splitter</h3>
+                        <p class="text-sm text-gray-300">STATUS: Active</p>
+                        <p class="text-xs text-gray-400 mt-2">A powerful, web-based text splitter to help programmers split their code into smaller, manageable chunks. Perfect for working with Large Language Models (LLMs) that have token or character limits. Or for any situation where you need to break down large text files.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hobbies Window -->
+        <div id="hobbies" class="window hidden fixed w-11/12 md:w-3/4 lg:w-1/2 p-6 bg-[#0a0a1a] border-2 border-blue-400 rounded-lg shadow-2xl shadow-blue-500/30 window-fade-in pointer-events-auto max-h-[90vh] overflow-y-auto">
+            <div class="window-header flex justify-between items-center p-2 bg-[#0c0c1c] border-b-2 border-blue-400 cursor-grab active:cursor-grabbing">
+                <span class="text-blue-400 font-bold">HOBBIES.log</span>
+                <button class="close-btn text-purple-400 hover:text-white transition-colors duration-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="window-content mt-4 p-4 text-sm md:text-base">
+                <h2 class="text-2xl md:text-3xl font-orbitron text-purple-400 mb-4">RECREATION_LOGS_</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="hover:text-purple-400 transition-colors duration-300 transform hover:scale-110">
+                        <i class="fas fa-chess-king text-4xl md:text-5xl mb-2"></i>
+                        <p>Chess</p>
+                    </div>
+                    <div class="hover:text-purple-400 transition-colors duration-300 transform hover:scale-110">
+                        <i class="fas fa-dumbbell text-4xl md:text-5xl mb-2"></i>
+                        <p>Calisthenics</p>
+                    </div>
+                    <div class="hover:text-purple-400 transition-colors duration-300 transform hover:scale-110">
+                        <i class="fas fa-futbol text-4xl md:text-5xl mb-2"></i>
+                        <p>Football</p>
+                    </div>
+                    <div class="hover:text-purple-400 transition-colors duration-300 transform hover:scale-110">
+                        <i class="fas fa-computer text-4xl md:text-5xl mb-2"></i>
+                        <p>Computers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <script>
-    // Reveal sections on scroll
-    const sections = document.querySelectorAll("section");
-    const reveal = () => {
-      sections.forEach(sec => {
-        const top = sec.getBoundingClientRect().top;
-        if(top < window.innerHeight - 100) sec.classList.add("visible");
-      });
-    };
-    window.addEventListener("scroll", reveal);
-    reveal();
+        <!-- Socials Window -->
+        <div id="socials" class="window hidden fixed w-11/12 md:w-3/4 lg:w-1/2 p-6 bg-[#0a0a1a] border-2 border-blue-400 rounded-lg shadow-2xl shadow-blue-500/30 window-fade-in pointer-events-auto max-h-[90vh] overflow-y-auto">
+            <div class="window-header flex justify-between items-center p-2 bg-[#0c0c1c] border-b-2 border-blue-400 cursor-grab active:cursor-grabbing">
+                <span class="text-blue-400 font-bold">SOCIALS.cfg</span>
+                <button class="close-btn text-purple-400 hover:text-white transition-colors duration-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="window-content mt-4 p-4 text-sm md:text-base">
+                <h2 class="text-2xl md:text-3xl font-orbitron text-purple-400 mb-4">SOCIAL_PROTOCOLS_</h2>
+                <div class="flex flex-col space-y-4">
+                    <a href="https://github.com/ziyaexe" target="_blank" class="flex items-center text-blue-300 hover:text-purple-400 transition-colors duration-200 transform hover:scale-105">
+                        <i class="fab fa-github text-xl mr-2"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://www.codedex.io/@ziyaexe" target="_blank" class="flex items-center text-blue-300 hover:text-purple-400 transition-colors duration-200 transform hover:scale-105">
+                        <i class="fa-solid fa-code text-xl mr-2"></i>
+                        <span>Codédex</span>
+                    </a>
+                    <a href="https://www.instagram.com/ziyasecurity/" target="_blank" class="flex items-center text-blue-300 hover:text-purple-400 transition-colors duration-200 transform hover:scale-105">
+                        <i class="fab fa-instagram text-xl mr-2"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://x.com/ziyaexe" target="_blank" class="flex items-center text-blue-300 hover:text-purple-400 transition-colors duration-200 transform hover:scale-105">
+                        <i class="fab fa-twitter text-xl mr-2"></i>
+                        <span>X</span>
+                    </a>
+                    <a href="https://www.youtube.com/@ziyasecurity" target="_blank" class="flex items-center text-blue-300 hover:text-purple-400 transition-colors duration-200 transform hover:scale-105">
+                        <i class="fab fa-youtube text-xl mr-2"></i>
+                        <span>YouTube</span>
+                    </a>
+                    <a href="https://medium.com/@ziyaexe" target="_blank" class="flex items-center text-blue-300 hover:text-purple-400 transition-colors duration-200 transform hover:scale-105">
+                        <i class="fab fa-medium text-xl mr-2"></i>
+                        <span>Medium</span>
+                    </a>
+                    <a href="https://www.chess.com/member/ziyaexe" target="_blank" class="flex items-center text-blue-300 hover:text-purple-400 transition-colors duration-200 transform hover:scale-105">
+                        <i class="fas fa-chess-king text-xl mr-2"></i>
+                        <span>Chess.com</span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-    // Generate glitch particles
-    for(let i=0; i<25; i++) {
-      const p = document.createElement("div");
-      p.className = "particle";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.animationDuration = 3 + Math.random()*5 + "s";
-      document.body.appendChild(p);
-    }
-  </script>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuItems = document.querySelectorAll('.menu-item');
+            const closeButtons = document.querySelectorAll('.close-btn');
+            const windows = document.querySelectorAll('.window');
+            const canvas = document.getElementById('background-canvas');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            let steps = [];
+            let lastTime = 0;
+            let starCount = 500;
+            const stepCount = 50;
+
+            const resizeCanvas = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                stars = [];
+                for (let i = 0; i < starCount; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 1.5,
+                        opacity: Math.random(),
+                        vx: 0,
+                        vy: 0.1, // Slower upward movement
+                    });
+                }
+                steps = [];
+                const stepWidth = canvas.width / stepCount;
+                for(let i = 0; i < stepCount; i++) {
+                    const height = (i / stepCount) * canvas.height;
+                    const width = stepWidth;
+                    const x = i * stepWidth;
+                    steps.push({ x, y: canvas.height, width, height });
+                }
+            };
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const drawStars = () => {
+                ctx.fillStyle = '#f0f0c0'; // Soft yellow for stars
+                stars.forEach(s => {
+                    ctx.globalAlpha = s.opacity;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    s.y -= s.vy;
+                    if (s.y < 0) {
+                        s.y = canvas.height;
+                        s.x = Math.random() * canvas.width;
+                    }
+                });
+                ctx.globalAlpha = 1;
+            };
+
+            const drawSteps = () => {
+                ctx.strokeStyle = '#66b2ff'; // Blue for lines
+                ctx.lineWidth = 1;
+                steps.forEach(s => {
+                    ctx.beginPath();
+                    ctx.moveTo(s.x, s.y);
+                    ctx.lineTo(s.x, s.y - s.height);
+                    ctx.stroke();
+                });
+            };
+
+            const animateBackground = (timestamp) => {
+                const deltaTime = timestamp - lastTime;
+                lastTime = timestamp;
+                
+                ctx.fillStyle = 'rgba(10, 10, 26, 0.1)'; // Slight fade for trail effect
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                drawStars();
+                drawSteps();
+
+                requestAnimationFrame(animateBackground);
+            };
+            animateBackground(0);
+
+            // Handle window open
+            menuItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const windowId = item.dataset.window;
+                    const targetWindow = document.getElementById(windowId);
+                    if (targetWindow) {
+                        // Hide all other windows and show the target one
+                        windows.forEach(w => w.classList.add('hidden'));
+                        targetWindow.classList.remove('hidden');
+                        targetWindow.style.left = '50%';
+                        targetWindow.style.top = '50%';
+                    }
+                });
+            });
+
+            // Handle window close
+            closeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const window = btn.closest('.window');
+                    if (window) {
+                        window.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Window Drag functionality
+            windows.forEach(window => {
+                const header = window.querySelector('.window-header');
+                let isDragging = false;
+                let offsetX, offsetY;
+                
+                header.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    offsetX = e.clientX - window.getBoundingClientRect().left;
+                    offsetY = e.clientY - window.getBoundingClientRect().top;
+                    header.classList.add('cursor-grabbing');
+                    window.style.transition = 'none';
+                    window.style.pointerEvents = 'auto';
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    if (isDragging) {
+                        const x = e.clientX - offsetX;
+                        const y = e.clientY - offsetY;
+                        window.style.left = `${x}px`;
+                        window.style.top = `${y}px`;
+                    }
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    header.classList.remove('cursor-grabbing');
+                    window.style.transition = '0.3s ease-out';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
