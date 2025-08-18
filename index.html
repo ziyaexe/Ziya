@@ -1,202 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ZIYA.EXE — Retro-Futuristic Portfolio</title>
-  <meta name="description" content="CRT, VHS static, Matrix rain, neon cyberpunk UI, 3D project cards, boot sequence, Konami code." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziya.exe</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-  <!-- Google Fonts + Font Awesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+    :root {
+      --bg: #0b0b0f;
+      --red: #e50914;
+      --violet: #6a00ff;
+      --green: #3aff36;
+    }
 
-  <link rel="stylesheet" href="styles.css">
+    body {
+      margin: 0;
+      font-family: 'Share Tech Mono', monospace;
+      background: var(--bg);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* Parallax background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url("your-photo-bg.jpg") no-repeat center center/cover;
+      opacity: 0.1;
+      z-index: -2;
+      transform: translateY(0);
+      animation: parallax 20s linear infinite alternate;
+    }
+    @keyframes parallax {
+      from { transform: translateY(0); }
+      to { transform: translateY(-50px); }
+    }
+
+    /* CRT overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      animation: flicker 2s infinite;
+      z-index: -1;
+    }
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: .99; }
+      20%, 24%, 55% { opacity: .4; }
+    }
+
+    header {
+      text-align: center;
+      padding: 5vh 2vw;
+    }
+
+    .title {
+      font-size: 2.5em;
+      color: var(--red);
+      text-shadow: 0 0 10px var(--red), 0 0 20px var(--violet);
+      animation: glitch 2s infinite;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 var(--red), -2px 0 var(--violet); }
+      20% { text-shadow: -2px -2px var(--violet), 2px 2px var(--red); }
+      40% { text-shadow: 2px -2px var(--violet), -2px 2px var(--red); }
+      60%,100% { text-shadow: 0 0 10px var(--red), 0 0 20px var(--violet); }
+    }
+
+    section {
+      max-width: 900px;
+      margin: 5vh auto;
+      padding: 2em;
+      background: rgba(0,0,0,0.65);
+      border: 1px solid var(--violet);
+      border-radius: 8px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+      animation: fadein 1.2s ease forwards;
+      opacity: 0;
+    }
+    section.visible { opacity: 1; }
+
+    @keyframes fadein {
+      from {opacity:0; transform:translateY(40px);}
+      to {opacity:1; transform:translateY(0);}
+    }
+
+    img {
+      width: 100%;
+      border-radius: 6px;
+      margin: 10px 0;
+      filter: contrast(1.1) saturate(1.2);
+      transition: transform .3s ease;
+    }
+    img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px var(--red);
+    }
+
+    a {
+      color: var(--green);
+      text-decoration: none;
+    }
+    a:hover {
+      color: var(--red);
+      text-shadow: 0 0 5px var(--violet);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2em;
+      font-size: .9em;
+      color: #999;
+    }
+
+    /* Floating glitch particles */
+    .particle {
+      position: fixed;
+      width: 2px; height: 20px;
+      background: var(--violet);
+      opacity: 0.6;
+      animation: fall 6s linear infinite;
+    }
+    @keyframes fall {
+      from { transform: translateY(-50px); }
+      to { transform: translateY(110vh); }
+    }
+  </style>
 </head>
 <body>
-  <!-- Background canvases -->
-  <canvas id="matrixCanvas" aria-hidden="true"></canvas>
-  <canvas id="noiseCanvas" aria-hidden="true"></canvas>
-  <div class="parallax" aria-hidden="true">
-    <div class="city"></div>
-    <div class="grid"></div>
-  </div>
+  <header>
+    <h1 class="title">Ziya.exe</h1>
+    <p>Computer Science · Cyber Security · Digital Explorer</p>
+  </header>
 
-  <!-- Short boot overlay -->
-  <div id="boot" role="dialog" aria-label="Boot sequence">
-    <div class="terminal" id="bootLog" aria-live="polite"></div>
-  </div>
+  <section>
+    <h2>About Me</h2>
+    <p>I’m Ziya, 18 years old. Studying <strong>Computer Science</strong> and focused on <strong>Cyber Security</strong>. Currently exploring Help Desk, networks, and hacking challenges.</p>
+    <img src="your-photo1.jpg" alt="Anime Background 1">
+  </section>
 
-  <div class="crt">
-    <header>
-      <div class="wrap">
-        <div class="title" aria-label="Site title">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span>ZIYA.EXE</span>
-          <span class="badge">Online</span>
-        </div>
-        <div class="sub">
-          Last Updated: <time datetime="2025-08-17T07:44:26Z">2025-08-17 07:44:26 UTC</time> · Author: @ziyaexe
-        </div>
-      </div>
-    </header>
+  <section>
+    <h2>Projects</h2>
+    <p>Some projects I worked on:</p>
+    <ul>
+      <li><a href="https://github.com/ziyaexe/Text-Splitter">Text Splitter</a></li>
+      <li><a href="https://github.com/ziyaexe">Other GitHub Projects</a></li>
+    </ul>
+    <img src="your-photo2.jpg" alt="Anime Background 2">
+  </section>
 
-    <main>
-      <!-- Hero -->
-      <section class="hero wrap">
-        <div class="tagline">
-          <span class="glitch" data-text="Retro-Futuristic Portfolio">Retro-Futuristic Portfolio</span>
-          <div>CRT • VHS • Matrix • Neon • Cyberpunk UI</div>
-        </div>
-        <div class="badges">
-          <span class="badge"><i class="fa-solid fa-microchip"></i> HTML/CSS/JS</span>
-          <span class="badge"><i class="fa-solid fa-terminal"></i> Boot Sequence</span>
-          <span class="badge"><i class="fa-solid fa-layer-group"></i> Parallax</span>
-          <span class="badge"><i class="fa-solid fa-key"></i> Konami Egg</span>
-          <span class="badge"><i class="fa-solid fa-mobile-screen"></i> Responsive</span>
-          <span class="badge"><i class="fa-solid fa-print"></i> Print-friendly</span>
-        </div>
-      </section>
+  <section>
+    <h2>Hobbies</h2>
+    <p>♟ Chess | 💪 Calisthenics | ⚽ Football | 💻 Computers</p>
+    <img src="your-photo3.jpg" alt="Anime Background 3">
+  </section>
 
-      <!-- Projects -->
-      <section class="wrap" id="projects">
-        <h2><span class="pipe">|</span> Projects</h2>
-        <div class="grid-cards">
-          <article class="card" tabindex="0">
-            <div class="card-inner">
-              <div class="card-face card-front" aria-label="Project: Cyber Terminal">
-                <div class="icon">🖥️</div>
-                <h3>Cyber Terminal</h3>
-                <p>CLI-style web shell</p>
-              </div>
-              <div class="card-face card-back">
-                <p>Interactive JS terminal with commands, history, and ASCII art.</p>
-                <div class="status">Status: Active</div>
-              </div>
-            </div>
-          </article>
+  <section>
+    <h2>Socials</h2>
+    <ul>
+      <li>GitHub: <a href="https://github.com/ziyaexe">github.com/ziyaexe</a></li>
+      <li>Codédex: <a href="https://www.codedex.io/@ziyaexe">codedex.io/@ziyaexe</a></li>
+      <li>Instagram: <a href="https://www.instagram.com/ziyasecurity/">@ziyasecurity</a></li>
+      <li>X/Twitter: <a href="https://x.com/ziyaexe">@ziyaexe</a></li>
+      <li>YouTube: <a href="https://www.youtube.com/@ziyasecurity">YouTube</a></li>
+      <li>Medium: <a href="https://medium.com/@ziyaexe">@ziyaexe</a></li>
+      <li>Chess: <a href="https://www.chess.com/member/ziyaexe">@ziyaexe</a></li>
+    </ul>
+  </section>
 
-          <article class="card" tabindex="0">
-            <div class="card-inner">
-              <div class="card-face card-front" aria-label="Project: Matrix Rain">
-                <div class="icon">🌧️</div>
-                <h3>Matrix Rain</h3>
-                <p>Canvas animation</p>
-              </div>
-              <div class="card-face card-back">
-                <p>Optimized columns, dynamic density control, responsive to DPR.</p>
-                <div class="status">Status: Stable</div>
-              </div>
-            </div>
-          </article>
+  <footer>
+    <p>© 2025 Ziya.exe</p>
+  </footer>
 
-          <article class="card" tabindex="0">
-            <div class="card-inner">
-              <div class="card-face card-front" aria-label="Project: VHS Noise">
-                <div class="icon">📼</div>
-                <h3>VHS Noise</h3>
-                <p>Procedural static</p>
-              </div>
-              <div class="card-face card-back">
-                <p>Pixel noise shader look using Canvas 2D for broad compatibility.</p>
-                <div class="status">Status: Beta</div>
-              </div>
-            </div>
-          </article>
+  <script>
+    // Reveal sections on scroll
+    const sections = document.querySelectorAll("section");
+    const reveal = () => {
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if(top < window.innerHeight - 100) sec.classList.add("visible");
+      });
+    };
+    window.addEventListener("scroll", reveal);
+    reveal();
 
-          <!-- README-style example slot -->
-          <article class="card" tabindex="0">
-            <div class="card-inner">
-              <div class="card-face card-front">
-                <div class="icon">🔒</div>
-                <h3>Project Title</h3>
-                <p>Click/hover to flip</p>
-              </div>
-              <div class="card-face card-back">
-                <p>Project description</p>
-                <div class="status">Status: Active</div>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- Skills -->
-      <section class="wrap" id="skills">
-        <h2><span class="pipe">|</span> Skills</h2>
-        <div class="skills">
-          <div class="skill"><h4>HTML5</h4><div class="bar"><span style="--pct:95%"></span></div></div>
-          <div class="skill"><h4>CSS3 / Animations</h4><div class="bar"><span style="--pct:92%"></span></div></div>
-          <div class="skill"><h4>JavaScript (Vanilla)</h4><div class="bar"><span style="--pct:88%"></span></div></div>
-          <div class="skill"><h4>Cyber Security</h4><div class="bar"><span style="--pct:75%"></span></div></div>
-          <div class="skill"><h4>Help Desk</h4><div class="bar"><span style="--pct:80%"></span></div></div>
-          <div class="skill"><h4>Chess & Strategy</h4><div class="bar"><span style="--pct:70%"></span></div></div>
-        </div>
-      </section>
-
-      <!-- Hobbies -->
-      <section class="wrap" id="hobbies">
-        <h2><span class="pipe">|</span> Hobbies</h2>
-        <div class="grid-cards">
-          <article class="card" tabindex="0">
-            <div class="card-inner">
-              <div class="card-face card-front"><div class="icon">♟️</div><h3>Chess</h3><p>Openings & tactics</p></div>
-              <div class="card-face card-back"><p>Favorite: Sicilian Defense • Daily puzzles and rapid games.</p><div class="status">Pixel icon</div></div>
-            </div>
-          </article>
-          <article class="card" tabindex="0">
-            <div class="card-inner">
-              <div class="card-face card-front"><div class="icon">🤸</div><h3>Calisthenics</h3><p>Bodyweight flows</p></div>
-              <div class="card-face card-back"><p>Rings, handstands, planche progressions.</p><div class="status">Active</div></div>
-            </div>
-          </article>
-          <article class="card" tabindex="0">
-            <div class="card-inner">
-              <div class="card-face card-front"><div class="icon">🏈</div><h3>Football</h3><p>Team play</p></div>
-              <div class="card-face card-back"><p>Wing play & endurance drills.</p><div class="status">Seasonal</div></div>
-            </div>
-          </article>
-          <article class="card" tabindex="0">
-            <div class="card-inner">
-              <div class="card-face card-front"><div class="icon">💻</div><h3>Computers</h3><p>Build • Tweak • Hack</p></div>
-              <div class="card-face card-back"><p>OSINT, scripting, performance tuning.</p><div class="status">Always on</div></div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- Socials -->
-      <section class="wrap" id="socials">
-        <h2><span class="pipe">|</span> Connected Profiles</h2>
-        <nav class="socials" aria-label="Social links">
-          <a class="social-link" href="https://github.com/ziyaexe" target="_blank" rel="noopener">
-            <i class="fa-brands fa-github"></i><span>GitHub</span><span class="hovercard">github.com/ziyaexe</span>
-          </a>
-          <a class="social-link" href="https://www.youtube.com/@ziyasecurity" target="_blank" rel="noopener">
-            <i class="fa-brands fa-youtube"></i><span>YouTube</span><span class="hovercard">@ziyasecurity</span>
-          </a>
-          <a class="social-link" href="https://www.chess.com/member/ziyaexe" target="_blank" rel="noopener">
-            <i class="fa-solid fa-chess-knight"></i><span>Chess.com</span><span class="hovercard">/member/ziyaexe</span>
-          </a>
-          <a class="social-link" href="https://www.instagram.com/ziyasecurity/" target="_blank" rel="noopener">
-            <i class="fa-brands fa-instagram"></i><span>Instagram</span><span class="hovercard">@ziyasecurity</span>
-          </a>
-          <a class="social-link" href="https://www.codedex.io/@ziyaexe" target="_blank" rel="noopener">
-            <i class="fa-solid fa-code"></i><span>Codedex</span><span class="hovercard">@ziyaexe</span>
-          </a>
-          <a class="social-link" href="https://x.com/ziyaexe" target="_blank" rel="noopener">
-            <i class="fa-brands fa-x-twitter"></i><span>X / Twitter</span><span class="hovercard">@ziyaexe</span>
-          </a>
-        </nav>
-      </section>
-
-      <footer>
-        <div>Made with 💾 by <strong>ziyaexe</strong> • MIT License</div>
-      </footer>
-    </main>
-  </div>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script src="script.js"></script>
+    // Generate glitch particles
+    for(let i=0; i<25; i++) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.animationDuration = 3 + Math.random()*5 + "s";
+      document.body.appendChild(p);
+    }
+  </script>
 </body>
 </html>
